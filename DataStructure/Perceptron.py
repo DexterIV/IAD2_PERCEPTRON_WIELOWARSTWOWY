@@ -2,7 +2,7 @@ import random
 import numpy
 
 
-class Neuron:
+class Perceptron:
     def __init__(self, number_of_inputs, values, random_seed):
         self.values = values
         random.seed(random_seed)
