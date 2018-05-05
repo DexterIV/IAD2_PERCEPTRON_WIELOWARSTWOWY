@@ -18,13 +18,14 @@ class NeuralNetwork:
         return
 
     def query(self, input_list):
-        inputs = numpy.array(input_list, ndmin=2).T
+        inputs = numpy.array(input_list, ndmin=2).T # convert inputs list to 2d array
 
-        hidden_inputs = numpy.dot(self.wih, inputs)
-        hidden_outputs = self.activation_function(hidden_inputs)
+        hidden_inputs = numpy.dot(self.wih, inputs) # calculate signals into hidden layer
+        hidden_outputs = self.activation_function(hidden_inputs) # calculate the signals emerging from hidden layer
 
-        final_outputs = numpy.dot(self.who, hidden_outputs)
+        final_outputs = numpy.dot(self.who, hidden_outputs) # calculate signals into final output layer
 
-        final_outputs = self.activation_function(final_outputs)
+        final_outputs = self.activation_function(final_outputs) # calculate the signals emerging from final output layer
+
 
         return final_outputs
