@@ -5,7 +5,7 @@ from DataStructure.NeuralNetwork import NeuralNetwork
 
 
 def task_2():
-    network = NeuralNetwork(4, 6, 4, 0.1, 0)
+    network = NeuralNetwork(4, 2, 4, 0.1, 0)
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
