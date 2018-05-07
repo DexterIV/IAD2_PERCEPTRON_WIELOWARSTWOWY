@@ -46,7 +46,6 @@ class NeuralNetwork:
 
         self.wih += (self.learning_rate * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
                                                     numpy.transpose(inputs))) * (1 + self.momentum)
-
         pass
 
     def query(self, input_list):
