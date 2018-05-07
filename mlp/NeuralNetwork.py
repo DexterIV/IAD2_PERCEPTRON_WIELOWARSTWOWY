@@ -1,5 +1,5 @@
 import numpy
-import library
+from library import funs
 
 
 class NeuralNetwork:
@@ -12,7 +12,7 @@ class NeuralNetwork:
 
         self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes) - 0.5)  # weight input to hidden
         self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
-        self.activation_function = lambda x: library.sigmoid(x)
+        self.activation_function = lambda x: funs.sigmoid(x)
         pass
 
     def train(self, input_list, target_list, epochs):
