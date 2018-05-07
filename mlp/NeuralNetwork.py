@@ -10,8 +10,11 @@ class NeuralNetwork:
         self.learning_rate = learning_rate
         self.momentum = momentum
 
-        self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes) - 0.5)  # weight input to hidden
-        self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
+        self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
+        self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes + 1) - 0.5)  # weight hidden to output
+        self.bias_wih = (numpy.random.rand() - 0.5)
+        self.bias_who = (numpy.random.rand() - 0.5)
+        self.bias_value = 1
         self.activation_function = lambda x: funs.sigmoid(x)
         pass
 
@@ -22,10 +25,12 @@ class NeuralNetwork:
 
     def train_manual_epochs(self, input_list, target_list):
         # convert inputs list to 2d array
+        input_list.append(1)
         inputs = numpy.array(input_list, ndmin=2).T
         targets = numpy.array(target_list, ndmin=2).T
         # calculate signals into hidden layer
         hidden_inputs = numpy.dot(self.wih, inputs)
+        hidden_inputs = numpy.vstack([hidden_inputs, 1])
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
         # calculate signals into final output layer
