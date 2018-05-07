@@ -1,7 +1,7 @@
 import random
 import numpy
 
-from DataStructure.NeuralNetwork import NeuralNetwork
+from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_2():
