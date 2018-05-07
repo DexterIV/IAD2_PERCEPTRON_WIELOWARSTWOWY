@@ -3,18 +3,23 @@ from library import funs
 
 
 class NeuralNetwork:
-    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum):
+    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias):
         self.input_nodes = input_nodes
         self.hidden_nodes = hidden_nodes
         self.output_nodes = output_nodes
         self.learning_rate = learning_rate
         self.momentum = momentum
+        self.bias = bias
+        self.bias_set = True
 
-        self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
-        self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes + 1) - 0.5)  # weight hidden to output
-        self.bias_wih = (numpy.random.rand() - 0.5)
-        self.bias_who = (numpy.random.rand() - 0.5)
-        self.bias_value = 1
+        if self.bias:
+            self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
+            self.wih = numpy.vstack([self.wih, numpy.zeros(self.input_nodes + 1)])
+            self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes + 1) - 0.5)  # weight hidden to output
+        else:
+            self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes) - 0.5)  # weight input to hidden
+            self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
+
         self.activation_function = lambda x: funs.sigmoid(x)
         pass
 
@@ -25,13 +30,22 @@ class NeuralNetwork:
 
     def train_manual_epochs(self, input_list, target_list):
         # convert inputs list to 2d array
-        input_list.append(1)
-        inputs = numpy.array(input_list, ndmin=2).T
-        targets = numpy.array(target_list, ndmin=2).T
-        # calculate signals into hidden layer
-        hidden_inputs = numpy.dot(self.wih, inputs)
-        hidden_inputs = numpy.vstack([hidden_inputs, 1])
-        # calculate the signals emerging from hidden layer
+        if self.bias:
+            if self.bias_set:
+                input_list.append(1)
+                self.bias_set = False
+
+            inputs = numpy.array(input_list, ndmin=2).T
+            targets = numpy.array(target_list, ndmin=2).T
+            # calculate signals into hidden layer
+            hidden_inputs = numpy.dot(self.wih, inputs)
+          #  hidden_inputs = numpy.vstack([hidden_inputs, 1])
+        else:
+            inputs = numpy.array(input_list, ndmin=2).T
+            targets = numpy.array(target_list, ndmin=2).T
+            # calculate signals into hidden layer
+            hidden_inputs = numpy.dot(self.wih, inputs)
+
         hidden_outputs = self.activation_function(hidden_inputs)
         # calculate signals into final output layer
         final_inputs = numpy.dot(self.who, hidden_outputs)

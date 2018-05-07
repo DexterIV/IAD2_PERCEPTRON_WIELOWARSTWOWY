@@ -5,7 +5,7 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_2():
-    network = NeuralNetwork(4, 2, 4, 0.1, 0.1)
+    network = NeuralNetwork(4, 2, 4, 0.1, 0.1, bias=True)
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
