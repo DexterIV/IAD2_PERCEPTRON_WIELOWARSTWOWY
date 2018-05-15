@@ -3,7 +3,7 @@ from library import funs
 import copy
 
 class NeuralNetwork:
-    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias):
+    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias, hidden_layers_quantity):
         self.input_nodes = input_nodes
         self.hidden_nodes = hidden_nodes
         self.output_nodes = output_nodes
@@ -12,6 +12,8 @@ class NeuralNetwork:
         self.bias = bias
         self.bias_set = True
 
+        self.hidden = numpy.random.uniform(size=(hidden_layers_quantity, hidden_nodes))
+
         if self.bias:
             self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
             self.wih = numpy.vstack([self.wih, numpy.zeros(self.input_nodes + 1)])
@@ -19,9 +21,18 @@ class NeuralNetwork:
         else:
             self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes) - 0.5)  # weight input to hidden
             self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
+# 1: sigmoid(w11 * I1 + w21 * I2 + w31 * I3 )
+
+        #neuron -> n wag, gdzie n to liczba neuronów w następnej warstwie
 
         self.activation_function = lambda x: funs.sigmoid(x)
         pass
+
+    def test(self, table):
+        for layer in table:
+            for i in layer:
+                print(i)
+            print("\n")
 
     def train(self, input_list, target_list, epochs):
         for e in range(epochs):
@@ -53,6 +64,9 @@ class NeuralNetwork:
         # output layer error i)­ actual)
         output_errors = targets - final_outputs
         hidden_errors = numpy.dot(self.who.T, output_errors)
+
+
+
         self.who += (self.learning_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
                                                     numpy.transpose(hidden_outputs))) * (1 + self.momentum)
 
