@@ -10,87 +10,118 @@ class NeuralNetwork:
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.bias = bias
-        self.bias_set = True
-
-        self.hidden = numpy.random.uniform(size=(hidden_layers_quantity, hidden_nodes))
-
-        if self.bias:
-            self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
-            self.wih = numpy.vstack([self.wih, numpy.zeros(self.input_nodes + 1)])
-            self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes + 1) - 0.5)  # weight hidden to output
-        else:
-            self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes) - 0.5)  # weight input to hidden
-            self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
-# 1: sigmoid(w11 * I1 + w21 * I2 + w31 * I3 )
-
-        #neuron -> n wag, gdzie n to liczba neuronów w następnej warstwie
-
+        self.hidden_layers_quantity = hidden_layers_quantity
+        self.hidden_layers = self._create_hidden_layers()
         self.activation_function = lambda x: funs.sigmoid(x)
-        pass
+        self.activation_function_derivative = lambda x: funs.sigmoid_der(x)
 
-    def test(self, table):
-        for layer in table:
-            for i in layer:
-                print(i)
-            print("\n")
+    def _create_hidden_layers(self):
+        layers = []
+        i = 1
+        if self.bias:
+            # weight input to hidden with bias, so + 1
+            self.first_layer_weights = (numpy.random.rand (self.hidden_nodes, self.input_nodes + 1))
+            # create bias for the first layer
+            self.first_layer_weights = numpy.vstack([self.first_layer_weights, numpy.zeros(self.input_nodes + 1)])
+            # layers.append(wih)
+            # create one less, because first hidden layer has been already initialized
+            for i in range(1, self.hidden_layers_quantity):
+                # weight of previous layer on next
+                tmp = numpy.random.rand(self.hidden_nodes, self.hidden_nodes)
+                tmp = numpy.vstack([tmp, numpy.zeros(self.input_nodes + 1)])
+                layers.append(tmp)
+        else:
+            # weight input to hidden without bias
+            self.first_layer_weights = (numpy.random.rand(self.hidden_nodes, self.input_nodes))
+            # layers.append(wih)
+            # create one less, because first hidden layer has been already initialized
+            for i in range(1, self.hidden_layers_quantity):
+                # weight of previous layer on next
+                layers.append(numpy.random.rand(self.hidden_nodes, self.hidden_nodes))  # weight input to hidden
+
+        # weight from last hidden layer to output
+        # if layers list is empty use wih instead
+        if layers:
+            self.output_weights = numpy.random.rand(self.output_nodes, len(layers[i - 1]))
+        else:
+            self.output_weights = numpy.random.rand(self.output_nodes, len(self.first_layer_weights))
+        return numpy.array(layers)
 
     def train(self, input_list, target_list, epochs):
         for e in range(epochs):
             self.train_manual_epochs(input_list, target_list)
-        pass
 
     def train_manual_epochs(self, input_list, target_list):
-        # convert inputs list to 2d array
+        # prepare array for neuron outputs
+        neuron_outputs = []
 
+        # convert inputs list to 2d array
         if self.bias:
             temp = copy.copy(input_list)
             temp.append(1)
             inputs = numpy.array(temp, ndmin=2).T
             targets = numpy.array(target_list, ndmin=2).T
             # calculate signals into hidden layer
-            hidden_inputs = numpy.dot(self.wih, inputs)
+            neuron_outputs.append(numpy.dot(self.first_layer_weights, inputs))
         else:
             inputs = numpy.array(input_list, ndmin=2).T
             targets = numpy.array(target_list, ndmin=2).T
             # calculate signals into hidden layer
-            hidden_inputs = numpy.dot(self.wih, inputs)
+            neuron_outputs.append(numpy.dot(self.first_layer_weights, inputs))
 
-        hidden_outputs = self.activation_function(hidden_inputs)
-        # calculate signals into final output layer
-        final_inputs = numpy.dot(self.who, hidden_outputs)
+        for i in range(1, len(self.hidden_layers)):
+            neuron_outputs.append(numpy.dot(self.hidden_layers[i], self.activation_function(neuron_outputs[i - 1])))
 
         # calculate the signals emerging from final output layer
-        final_outputs = self.activation_function(final_inputs)
-        # output layer error i)­ actual)
-        output_errors = targets - final_outputs
-        hidden_errors = numpy.dot(self.who.T, output_errors)
+        final_outputs = self.activation_function(numpy.dot(self.output_weights,
+                                                           self.activation_function
+                                                           (neuron_outputs[len(neuron_outputs) - 1])))
 
+        neuron_outputs = numpy.array(neuron_outputs)
+        # initialize list of errors and insert output layer error (i ­ actual)
+        neuron_errors = [targets - final_outputs]
 
+        for i in range(len(self.hidden_layers), 0, -1):
+            neuron_errors.insert(0, numpy.dot(self.hidden_layers[i].T, neuron_errors[0]))
 
-        self.who += (self.learning_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
-                                                    numpy.transpose(hidden_outputs))) * (1 + self.momentum)
+        first_layer_errors = numpy.dot(self.first_layer_weights, neuron_errors[0])
 
-        self.wih += (self.learning_rate * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
-                                                    numpy.transpose(inputs))) * (1 + self.momentum)
-        pass
+        # backpropagation
+        self.output_weights += (self.learning_rate * numpy.dot(
+            (neuron_errors[len(neuron_errors) - 1] * self.activation_function_derivative(final_outputs)),
+            numpy.transpose(neuron_outputs[len(neuron_outputs) - 1]))) * (1 + self.momentum)
+
+        for i in range(len(self.hidden_layers) - 2, 0, -1):
+            self.hidden_layers[i] += (self.learning_rate * numpy.dot(
+                (neuron_errors[i] * self.activation_function_derivative(final_outputs)),
+                numpy.transpose(neuron_outputs[i]))) * (1 + self.momentum)
+
+        self.first_layer_weights += (self.learning_rate * numpy.dot(first_layer_errors *
+                                                                    self.activation_function_derivative(neuron_outputs[0]),
+                                                                    numpy.transpose(inputs)) * (1 + self.momentum))
 
     def query(self, input_list):
+        # prepare array for neuron outputs
+        neuron_outputs = []
+
+        # convert inputs list to 2d array
         if self.bias:
-            temp = copy.copy(input_list)
-            temp.append(1)
-            inputs = numpy.array(temp, ndmin=2).T
+            temp = copy.copy (input_list)
+            temp.append (1)
+            inputs = numpy.array (temp, ndmin=2).T
             # calculate signals into hidden layer
-            hidden_inputs = numpy.dot(self.wih, inputs)
+            neuron_outputs.append (numpy.dot (self.first_layer_weights, inputs))
         else:
             inputs = numpy.array(input_list, ndmin=2).T
             # calculate signals into hidden layer
-            hidden_inputs = numpy.dot(self.wih, inputs)
+            neuron_outputs.append (numpy.dot (self.first_layer_weights, inputs))
 
-        hidden_outputs = self.activation_function(hidden_inputs)  # calculate the signals emerging from hidden layer
+        for i in range (1, len (self.hidden_layers)):
+            neuron_outputs.append (numpy.dot (self.hidden_layers[i], self.activation_function (neuron_outputs[i - 1])))
 
-        final_outputs = numpy.dot(self.who, hidden_outputs)  # calculate signals into final output layer
-
-        final_outputs = self.activation_function(
-            final_outputs)  # calculate the signals emerging from final output layer
+        # calculate the signals emerging from final output layer
+        final_outputs = self.activation_function (numpy.dot (self.output_weights,
+                                                             self.activation_function
+                                                             (neuron_outputs[len (neuron_outputs) - 1])))
 
         return final_outputs
