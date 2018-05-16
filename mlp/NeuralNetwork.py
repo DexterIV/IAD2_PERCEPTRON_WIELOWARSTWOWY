@@ -21,6 +21,7 @@ class NeuralNetwork:
             self.who = (numpy.random.rand(self.output_nodes, self.hidden_nodes) - 0.5)  # weight hidden to output
 
         self.activation_function = lambda x: funs.sigmoid(x)
+        self.activation_function_derivative = lambda x: funs.sigmoid_der(x)
         pass
 
     def train(self, input_list, target_list, epochs):
@@ -53,10 +54,10 @@ class NeuralNetwork:
         # output layer error i)­ actual)
         output_errors = targets - final_outputs
         hidden_errors = numpy.dot(self.who.T, output_errors)
-        self.who += (self.learning_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
+        self.who += (self.learning_rate * numpy.dot((output_errors * self.activation_function_derivative(final_outputs)),
                                                     numpy.transpose(hidden_outputs))) * (1 + self.momentum)
 
-        self.wih += (self.learning_rate * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
+        self.wih += (self.learning_rate * numpy.dot((hidden_errors * self.activation_function_derivative(hidden_outputs)),
                                                     numpy.transpose(inputs))) * (1 + self.momentum)
         pass
 

@@ -9,7 +9,7 @@ def task_2():
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
-    epochs = 50000
+    epochs = 5000
     x = numpy.zeros(epochs * 4, dtype=int)
     for i in range(epochs):
         x[i] = 0
