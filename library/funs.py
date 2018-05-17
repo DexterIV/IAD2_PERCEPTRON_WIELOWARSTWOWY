@@ -33,4 +33,26 @@ def initialize_data(filename):
 
     return data
 
+def initialize_data_with1stcolumn(filename):
+    data = []
+    dataLabels = []
+    dataset_tmp = pd.read_csv(filename, header=None)
+    number_of_columns = len(dataset_tmp.columns)
+    data_attributes = []
+
+    for i in range(0, number_of_columns - 1):
+        dataLabels.append(dataset_tmp[i][0])
+
+    dataset = pd.read_csv(filename)
+
+    for i in range(0, number_of_columns - 1):
+        data_attributes.append(dataset.iloc[:, i].values)
+
+    for i in range(0, len(data_attributes[0])):
+        values = []
+        for j in range(len(data_attributes)):
+            values.append(data_attributes[j][i])
+        data.append(values)
+
+    return data
 
