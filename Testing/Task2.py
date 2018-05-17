@@ -6,7 +6,7 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 def task_2():
     network = NeuralNetwork(input_nodes=4, output_nodes=4, hidden_layers_quantity=1, hidden_nodes=2,
-                            learning_rate=0.1, momentum=0.1, bias=False)
+                            learning_rate=0.1, momentum=0.0, bias=False)
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
@@ -21,7 +21,7 @@ def task_2():
     random.shuffle(x)
 
     for e in range(len(x)):
-        network.train_manual_epochs(input_list[(x[e])], output[(x[e])])
+        network.train_manual_epochs(input_list[(x[e])], output[(x[e])], 0.1)
 
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     fin = [network.query(input_list[0]),
