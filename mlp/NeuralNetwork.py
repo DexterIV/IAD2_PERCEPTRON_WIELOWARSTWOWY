@@ -65,14 +65,13 @@ class NeuralNetwork:
 
         # iterate from last layer to first
         for i in range(len(self.layers) - 1, -1, -1):
-            for j in range(len(self.layers[i])):
-                self.layers[i][j] += (2 * learning_rate * numpy.dot(
-                    (neuron_errors[i] * self.activation_function_derivative(neuron_outputs[i])),
-                    neuron_outputs[i].T)) * (1 + self.momentum)
+            self.layers[i] += (2 * learning_rate * numpy.dot(
+                self.activation_function_derivative(neuron_outputs[i].T),
+                neuron_errors[i])) * (1 + self.momentum)
             if self.bias:
                 self.biases[i] += (2 * learning_rate * numpy.dot(
-                    (neuron_errors[i] * self.activation_function_derivative(neuron_outputs[i])),
-                    neuron_outputs[i].T)) * (1 + self.momentum)
+                    self.activation_function_derivative(neuron_outputs[i].T),
+                    neuron_errors[i])) * (1 + self.momentum)
 
     def add_by_inedxes(self, target, damn):
         for i in range(len(target)):
@@ -88,6 +87,6 @@ class NeuralNetwork:
 
         for i in range(1, len (self.layers)):
             neuron_outputs.append(numpy.dot(self.layers[i],
-                                            self.activation_function(neuron_outputs[i - 1])) + self.biases[i])
+                                            self.activation_function(neuron_outputs[i - 1])))
 
         return neuron_outputs[len(neuron_outputs) - 1]

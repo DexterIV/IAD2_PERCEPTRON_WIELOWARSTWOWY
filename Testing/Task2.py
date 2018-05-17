@@ -10,7 +10,7 @@ def task_2():
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
-    epochs = 50000
+    epochs = 150000
     x = numpy.zeros(epochs * 4, dtype=int)
     for i in range(epochs):
         x[i] = 0
@@ -21,7 +21,7 @@ def task_2():
     random.shuffle(x)
 
     for e in range(len(x)):
-        network.train_manual_epochs(input_list[(x[e])], output[(x[e])], 0.1)
+        network.train_manual_epochs(input_list[(x[e])], output[(x[e])], 0.3)
 
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     fin = [network.query(input_list[0]),
