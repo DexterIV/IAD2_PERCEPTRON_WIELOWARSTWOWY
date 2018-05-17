@@ -6,7 +6,9 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_Iris():
-    network = NeuralNetwork(4, 10, 3, 0.1, 0.1, bias=True)
+    network = NeuralNetwork(input_nodes=4, hidden_nodes=10,
+                            output_nodes=3, learning_rate=0.1,
+                            momentum=0.1, bias=True)
 
     input_list = initialize_data("Iris.csv")
     output = []
