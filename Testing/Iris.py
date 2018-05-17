@@ -6,7 +6,7 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_Iris():
-    network = NeuralNetwork(4, 5, 3, 0.1, 0.1, bias=True)
+    network = NeuralNetwork(4, 10, 3, 0.1, 0.1, bias=True)
 
     input_list = initialize_data("Iris.csv")
     output = []
@@ -24,8 +24,9 @@ def task_Iris():
     shuffled_output = copy.copy(output)
     random.shuffle(shuffled_output)
 
-    for e in range(len(shuffled_output)):
-        network.train_manual_epochs(output[e][1], output[e][0])
+    for i in range(epochs):
+        for e in range(len(shuffled_output)):
+            network.train_manual_epochs(shuffled_output[e][1], shuffled_output[e][0])
 
     fin = []
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
