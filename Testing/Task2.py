@@ -1,5 +1,6 @@
 import random
 import numpy
+import copy
 
 from mlp.NeuralNetwork import NeuralNetwork
 
@@ -27,7 +28,10 @@ def task_2():
            network.query(input_list[1]),
            network.query(input_list[2]),
            network.query(input_list[3])]
+    
     print(output)
 
     for elem in range(len(fin)):
         print(fin[elem])
+        
+
