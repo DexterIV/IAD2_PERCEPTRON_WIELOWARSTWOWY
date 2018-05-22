@@ -40,12 +40,12 @@ def task_Seeds():
         fin.append(network.query(input_list[i]))
     # print(output)
 
-    for elem in range(len(fin)):
-        print(fin[elem])
+    # for elem in range(len(fin)):
+    #     print(fin[elem])
 
     error = 0
     for elem in range(len(fin)):
         if numpy.argmax(fin[elem]) != indices[elem]:
             error += 1
 
-    print("error = " + str(error / len(fin) * 100) + "%")
+    print("error for seeds = " + str(error / len(fin) * 100) + "%")
