@@ -1,11 +1,13 @@
 import random
 
 from Testing.Iris import task_Iris
+from Testing.MNIST import task_MNIST
 from Testing.Seeds import task_Seeds
 from Testing.Task2 import task_2
 from knn.KNN import task_KNN
 
 # task_2()
-task_Iris()
+# task_Iris()
 # task_Seeds()
 # task_KNN()
+# task_MNIST()
