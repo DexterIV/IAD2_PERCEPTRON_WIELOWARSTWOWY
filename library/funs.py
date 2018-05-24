@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as pyplot
 
 
 def sigmoid(x):
@@ -56,3 +57,13 @@ def initialize_data_with1stcolumn(filename):
 
     return data
 
+
+def print_plot(x_axis, y_axis, title):
+    pyplot.figure(title)
+    pyplot.plot(x_axis, y_axis, 'r-', linestyle='solid', linewidth=1)
+    pyplot.grid(axis='both', color='black', which='major', linestyle='--', linewidth=1)
+    pyplot.xlabel("epoch")
+    pyplot.ylabel("error")
+    pyplot.suptitle(title)
+    pyplot.show()
+    pass

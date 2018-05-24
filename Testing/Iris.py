@@ -34,7 +34,7 @@ def task_Iris():
 
     for i in range(epochs):
         for e in range(len(shuffled_output)):
-            network.train_manual_epochs(shuffled_output[e][1], shuffled_output[e][0])
+            network.train_manual_epochs(shuffled_output[e][1], shuffled_output[e][0], e)
 
     fin = []
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
@@ -51,3 +51,5 @@ def task_Iris():
             error += 1
 
     print("error for iris= " + str(error / len(fin) * 100) + "%")
+
+    print_plot(network.sampling_iteration, network.errors_for_plot, 'Iris error plot')

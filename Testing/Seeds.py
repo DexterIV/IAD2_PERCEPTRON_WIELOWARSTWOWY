@@ -49,3 +49,5 @@ def task_Seeds():
             error += 1
 
     print("error for seeds = " + str(error / len(fin) * 100) + "%")
+
+    print_plot(network.sampling_iteration, network.errors_for_plot, 'Seeds error plot')

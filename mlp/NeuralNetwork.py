@@ -3,7 +3,8 @@ from library import funs
 import copy
 
 class NeuralNetwork:
-    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias):
+    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias,
+                 epochs, error_sampling_rate=0.005):
         self.input_nodes = input_nodes
         self.hidden_nodes = hidden_nodes
         self.output_nodes = output_nodes
@@ -11,6 +12,10 @@ class NeuralNetwork:
         self.momentum = momentum
         self.bias = bias
         self.bias_set = True
+        self.epochs = epochs
+        self.error_sampling_rate = error_sampling_rate
+        self.sampling_iteration = []
+        self.errors_for_plot = []
 
         if self.bias:
             self.wih = (numpy.random.rand(self.hidden_nodes, self.input_nodes + 1) - 0.5)  # weight input to hidden
@@ -26,10 +31,10 @@ class NeuralNetwork:
 
     def train(self, input_list, target_list, epochs):
         for e in range(epochs):
-            self.train_manual_epochs(input_list, target_list)
+            self.train_manual_epochs(input_list, target_list, e)
         pass
 
-    def train_manual_epochs(self, input_list, target_list):
+    def train_manual_epochs(self, input_list, target_list, epoch):
         # convert inputs list to 2d array
 
         if self.bias:
@@ -59,7 +64,17 @@ class NeuralNetwork:
 
         self.wih += (self.learning_rate * numpy.dot((hidden_errors * self.activation_function_derivative(hidden_outputs)),
                                                     numpy.transpose(inputs))) * (1 + self.momentum)
+
+        if (epoch) % int(self.epochs * self.error_sampling_rate) == 0:
+            self.sampling_iteration.append(epoch)
+            self.errors_for_plot.append(self._calculate_actual_error(targets, final_outputs))
         pass
+
+    def _calculate_actual_error(self, targets, outputs):
+        result = 0
+        for i in range(len(targets)):
+            result += (targets[i] - outputs[i]) ** 2
+        return result
 
     def query(self, input_list):
         if self.bias:

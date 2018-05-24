@@ -25,7 +25,7 @@ def task_MNIST():
             targets = numpy.zeros(10) + 0.01
             # all_values[0] is the target label for this record
             targets[int(all_values[0])] = 0.99
-            network.train_manual_epochs(inputs.tolist(), targets)
+            network.train_manual_epochs(inputs.tolist(), targets, e)
 
     # load the mnist test data CSV file into a list
     test_data_file = open("mnist_test.csv", 'r')
@@ -56,3 +56,5 @@ def task_MNIST():
             error += 1
 
     print("error for seeds = " + str(error / 10000 * 100) + "%")
+
+    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'MNIST error plot')

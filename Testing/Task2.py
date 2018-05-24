@@ -1,16 +1,17 @@
 import random
 import numpy
-import copy
+from library import funs
 
 from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_2():
-    network = NeuralNetwork(4, 2, 4, 0.1, 0.1, bias=True)
+    epochs = 5000
+    network = NeuralNetwork(4, 2, 4, 0.1, 0.1, bias=True, epochs=20000)
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
-    epochs = 5000
+
     x = numpy.zeros(epochs * 4, dtype=int)
     for i in range(epochs):
         x[i] = 0
@@ -21,7 +22,7 @@ def task_2():
     random.shuffle(x)
 
     for e in range(len(x)):
-        network.train_manual_epochs(input_list[(x[e])], output[(x[e])])
+        network.train_manual_epochs(input_list[(x[e])], output[(x[e])], e)
 
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     fin = [network.query(input_list[0]),
@@ -34,4 +35,4 @@ def task_2():
     for elem in range(len(fin)):
         print(fin[elem])
         
-
+    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Task 2 error plot')
