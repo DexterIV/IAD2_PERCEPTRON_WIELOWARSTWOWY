@@ -96,7 +96,11 @@ http://yann.lecun.com/exdb/mnist/\\
 Użycie biblioteki sklearn do rozwiązania klasyfikacji zbiorów metodą k nearest neighbours (KNN).\\
 Na podstawie seeds Data Set \\
 4 wejscia, 3 wyjscia\\
-https://archive.ics.uci.edu/ml/datasets/seeds\\
+https://archive.ics.uci.edu/ml/datasets/seeds\\}
+
+{
+Tabela wyników jest tabelą o wielkosći NxN gdzie N jest iloscią różnych klas w zbiorze danych (np 3x3 w iris data set bo są 3 gatunki irysów)
+Rzędy reprezentują klasy a kolumny reprezentują odpowiedź daną przez MLP. Idealnie wartosci powinny być niezerowe tylko w pozycjach o tym samym numerze rzędu i kolumny (po skosie)\\
 }
 \section{Wyniki}
 {Eksperyment 1\\
@@ -153,11 +157,15 @@ Podpunkt 3.4\\
 Podpunkt 4.1\\
 \includegraphics{imgs/MNIST1_1.png}\\
 \includegraphics{imgs/MNIST1.png}\\
+Podpunkt 4.2\\
+\includegraphics{imgs/MNIST21.png}\\
+\includegraphics{imgs/MNIST22.png}\\
 }
 
 {Eksperyment 5\\
-Podpunkt 4.1\\
+Podpunkt 5.1\\
 \includegraphics{imgs/KNN11.png}\\
+Podpunkt 5.2\\
 \includegraphics{imgs/KNN21.png}\\
 }
 
@@ -165,21 +173,23 @@ Podpunkt 4.1\\
 
 
 \section{Dyskusja}
-{\color{blue}
-Sekcja ta powinna zawierać dokładną interpretację uzyskanych wyników
-eksperymentów wraz ze szczegółowymi wnioskami z nich płynącymi. Najcenniejsze
-są, rzecz jasna, wnioski o charakterze uniwersalnym, które mogą być istotne
-przy innych, podobnych zadaniach. Należy również omówić i wyjaśnić wszystkie
-napotkane problemy (jeśli takie były). Każdy wniosek powinien mieć poparcie we
-wcześniej przeprowadzonych eksperymentach (odwołania do konkretnych wyników).
-Jest to jedna z najważniejszych sekcji tego sprawozdania, gdyż prezentuje
-poziom zrozumienia badanego problemu.}
+{Losowa inicjalizacja wagw sieci MLP ma wyrazny wplyw na uzyskane wyniki.\\
+Zwiększając ilosć epok nie zawsze sie zwiększa dokładnosć, może wystąpić przetrenowanie lub zmiany będą zbyt małe do zauważenia.\\
+Dobranie learning rate i momentum ma duże znaczenie. 
+Zbyt duże wartosci mogą doprowadzać do powstawania większych błędów, ale zbyt małe spowalniają proces nauki.\\
+Momentum większe od 1 ma zły wpływ na naukę sieci.\\
+Zbyt mała ilosć neuronów w warstwie ukrytej może spowodować brak nauki sieci.\\
+Przy małej ilosci neuronów w warstwie ukrytej do poprawnej nauki sieci potrzebny jest bias.\\
+W przpadku rozpoznawania cyfr można zauważyć że niektóre cyfry mogą być mylone przez sieć np. w podpunkcie 4.2 "6" ma najwięcej błędnych wyborów o wartosci "9".\\
+}
 
 \section{Wnioski}
-{\color{blue}
-W tej, przedostatniej, sekcji należy zamieścić podsumowanie najważniejszych
-wniosków z sekcji poprzedniej. Najlepiej jest je po prostu wypunktować. Znów,
-tak jak poprzednio, najistotniejsze są wnioski o charakterze uniwersalnym.}
+{- W nauce MLP czynnik losowy może mieć duże znaczenie\\
+- W nauce MLP kluczowe jest dobranie odpowiednich wartosci learning rate i momentum - za duze wartosci mogą generować błędy, ale za małe spowalniać proces nauki\\
+- Bias ma wpływ na sieć przy małej ilosci neuronów w warstwie ukrytej\\
+- Należy uważać na zjawisko przetrenowania\\
+- Duża ilosć epok może czasami nie mieć sensu gdyż zmiana błędu po czasie może być znikoma\\
+}
 
 \begin{thebibliography}{0}
   \bibitem{l2short} T. Oetiker, H. Partl, I. Hyna, E. Schlegl.
@@ -191,6 +201,10 @@ tak jak poprzednio, najistotniejsze są wnioski o charakterze uniwersalnym.}
 
 \bibitem{irisi} 
 \texttt{http://archive.ics.uci.edu/ml/datasets/Iris}
+\bibitem{seedi} 
+\texttt{http://archive.ics.uci.edu/ml/datasets/seeds}
+\bibitem{mnisti} 
+\texttt{http://yann.lecun.com/exdb/mnist/}
 
 
 
