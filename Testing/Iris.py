@@ -55,3 +55,5 @@ def task_Iris():
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
     calculate_results_table(3, indices, fin, 'Iris result table\n' + parameters)
     print_plot(network.sampling_iteration, network.errors_for_plot, 'Iris error plot \n' + parameters)
+
+

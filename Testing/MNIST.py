@@ -6,13 +6,14 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_MNIST():
+    numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     hidden_nodes = 128
-    epochs = 8
+    epochs = 5
     learning_rate = 0.05
     momentum = 0.2
     bias = True
     network = NeuralNetwork(input_nodes=784, hidden_nodes=hidden_nodes, output_nodes=10,learning_rate=learning_rate,
-                            momentum=momentum, bias=bias, epochs=epochs, error_sampling_rate=(1/8))
+                            momentum=momentum, bias=bias, epochs=epochs, error_sampling_rate=(1/epochs))
 
     # load the mnist training data CSV file into a list
     training_data_file = open("mnist_train.csv", 'r')
@@ -21,6 +22,7 @@ def task_MNIST():
     # train the neural network
     # go through all records in the training data set
     for e in range(epochs):
+        print("Epoch:" + str(e))
         collect_data_for_plot = True
         for record in training_data_list:
             # split the record by the ',' commas
@@ -44,19 +46,24 @@ def task_MNIST():
     # scorecard for how well the network performs, initially empty
     scorecard = []
     # go through all the records in the test data set
+    fin = []
+    values = []
     for record in test_data_list:
         # split the record by the ',' commas
         all_values = record.split(',')
         # correct answer is first value
         correct_label = int(all_values[0])
-        print(correct_label, "correct label")
+        values.append(correct_label)
+        # print(correct_label, "correct label")
         # scale and shift the inputs
         inputs = (numpy.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
+
         # query the network
         outputs = network.query(inputs.tolist())
+        fin.append(outputs)
         # the index of the highest value corresponds to the label
         label = numpy.argmax(outputs)
-        print(label, "network's answer")
+        # print(label, "network's answer")
         # append correct or incorrect to list
         if label == correct_label:
             # network's answer matches correct answer, add 1 to        scorecard
@@ -65,5 +72,5 @@ def task_MNIST():
     print("MNIST accuracy = " + str(error / 10000 * 100) + "%")
 
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
-    # calculate_results_table (3, indices, fin, 'Iris result table\n' + parameters)
+    calculate_results_table (10, values, fin, 'MNIST result table\n' + parameters)
     print_plot(network.sampling_iteration, network.errors_for_plot, 'MNIST error plot \n' + parameters)

@@ -1,12 +1,20 @@
 import random
 import numpy
 from library import funs
+from library.funs import parameters_as_string, print_plot, calculate_results_table
 
 from mlp.NeuralNetwork import NeuralNetwork
 
+
 def task_2():
     epochs = 5000
-    network = NeuralNetwork(4, 2, 4, 0.1, 0.1, bias=True, epochs=20000)
+    hidden_nodes = 10
+    learning_rate = 0.1
+    momentum = 0.1
+    bias = True
+    network = NeuralNetwork(input_nodes=4, hidden_nodes=hidden_nodes, output_nodes=4,
+                            learning_rate=learning_rate,
+                            momentum=momentum, bias=bias, epochs=epochs)
 
     input_list = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
     output = [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
@@ -42,4 +50,5 @@ def task_2():
 
     print('Example results table')
     print(result_tab)
-    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Task 2 error plot')
+    parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
+    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Task 2 error plot' + parameters)

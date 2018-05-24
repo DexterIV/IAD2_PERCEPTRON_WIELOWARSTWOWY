@@ -12,7 +12,6 @@ class NeuralNetwork:
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.bias = bias
-        self.bias_set = True
         self.epochs = epochs
         self.error_sampling_rate = error_sampling_rate
         self.sampling_iteration = []
