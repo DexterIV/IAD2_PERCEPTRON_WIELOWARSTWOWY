@@ -35,7 +35,7 @@ class NeuralNetwork:
             self.train_manual_epochs(input_list, target_list, e)
         pass
 
-    def train_manual_epochs(self, input_list, target_list, epoch):
+    def train_manual_epochs(self, input_list, target_list, epoch, plot=True):
         # convert inputs list to 2d array
 
         if self.bias:
@@ -66,7 +66,7 @@ class NeuralNetwork:
         self.wih += (self.learning_rate * numpy.dot((hidden_errors * self.activation_function_derivative(hidden_outputs)),
                                                     numpy.transpose(inputs))) * (1 + self.momentum)
 
-        if (epoch) % int(self.epochs * self.error_sampling_rate) == 0:
+        if plot and epoch % int(self.epochs * self.error_sampling_rate) == 0:
             self.sampling_iteration.append(epoch)
             self.errors_for_plot.append(self._calculate_actual_error(targets, final_outputs))
         pass

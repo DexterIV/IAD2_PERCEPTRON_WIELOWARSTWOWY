@@ -59,28 +59,31 @@ def initialize_data_with1stcolumn(filename):
 
 
 def print_plot(x_axis, y_axis, title):
-    pyplot.figure(title)
+    short_title, params = title.split('\n', 1)
+    pyplot.figure(short_title)
     pyplot.plot(x_axis, y_axis, 'r-', linestyle='solid', linewidth=1)
     pyplot.grid(axis='both', color='black', which='major', linestyle='--', linewidth=1)
     pyplot.xlabel("epoch")
     pyplot.ylabel("error")
-    pyplot.suptitle(title)
+    pyplot.suptitle(short_title + '\n' + params)
     pyplot.show()
 
 
-def get_index_of_max_element(source):
-    index_max = 0
-    for i in range(1, len(source)):
-        if source[i] > source[index_max]:
-            index_max = i
-    return index_max
-
-
-def calculate_results_table(number_of_classes, expected, actual):
+def calculate_results_table(number_of_classes, expected, actual, title):
     result_tab = np.zeros(shape=(number_of_classes, number_of_classes))
 
     for i in range(len(actual)):
-        result_tab[get_index_of_max_element(expected[i])][get_index_of_max_element(actual[i])] += 1
+        result_tab[expected[i]][np.argmax(actual[i])] += 1
 
-    print('printing results table')
+    print(title)
     print(result_tab)
+
+
+def parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias):
+    result = ''
+    result += 'hidden nodes= ' + str(hidden_nodes) + ' | ' \
+            + 'learning rate= ' + str(learning_rate) + ' | ' \
+            + 'momentum= ' + str(momentum) + '\n' \
+            + 'epochs= ' + str(epochs) + ' | ' \
+            + 'bias: ' + str(bias)
+    return result

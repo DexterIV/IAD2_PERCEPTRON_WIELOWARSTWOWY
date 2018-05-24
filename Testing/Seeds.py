@@ -6,7 +6,13 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_Seeds():
-    network = NeuralNetwork(7, 16, 3, 0.01, 0.2, bias=True)
+    hidden_nodes = 16
+    epochs = 5000
+    learning_rate = 0.05
+    momentum = 0.2
+    bias = True
+    network = NeuralNetwork(input_nodes=7, hidden_nodes=hidden_nodes, output_nodes=3,
+                            learning_rate=learning_rate, momentum=momentum, bias=bias, epochs=epochs)
 
     input_list = initialize_data_with1stcolumn("seeds_dataset.csv")
     output = []
@@ -25,23 +31,19 @@ def task_Seeds():
     indices.append(2)
 
     print(output)
-    epochs = 5000
 
     shuffled_output = copy.copy(output)
     random.shuffle(shuffled_output)
 
     for i in range(epochs):
         for e in range(len(shuffled_output)):
-            network.train_manual_epochs(shuffled_output[e][1], shuffled_output[e][0])
+            network.train_manual_epochs(shuffled_output[e][1], shuffled_output[e][0], i, e == 0)
+
+    numpy.set_printoptions(suppress=True)  # avoid e-05 notation
 
     fin = []
-    numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     for i in range(len(input_list)):
         fin.append(network.query(input_list[i]))
-    # print(output)
-
-    # for elem in range(len(fin)):
-    #     print(fin[elem])
 
     error = 0
     for elem in range(len(fin)):
@@ -50,4 +52,6 @@ def task_Seeds():
 
     print("error for seeds = " + str(error / len(fin) * 100) + "%")
 
-    print_plot(network.sampling_iteration, network.errors_for_plot, 'Seeds error plot')
+    parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
+    calculate_results_table(3, indices, fin, 'Seeds result table \n' + parameters)
+    print_plot(network.sampling_iteration, network.errors_for_plot, 'Seeds error plot\n' + parameters)

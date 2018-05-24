@@ -35,5 +35,11 @@ def task_2():
     for elem in range(len(fin)):
         print(fin[elem])
 
-    funs.calculate_results_table(len(input_list), query_list, fin)
+    result_tab = numpy.zeros(shape=(len(input_list), len(input_list)))
+
+    for i in range(len(fin)):
+        result_tab[numpy.argmax(query_list[i])][numpy.argmax(fin[i])] += 1
+
+    print('Example results table')
+    print(result_tab)
     funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Task 2 error plot')
