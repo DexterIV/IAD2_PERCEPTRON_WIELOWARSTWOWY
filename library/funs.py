@@ -66,7 +66,9 @@ def print_plot(x_axis, y_axis, title):
     pyplot.xlabel("epoch")
     pyplot.ylabel("error")
     pyplot.suptitle(short_title + '\n' + params)
+    pyplot.savefig('plot.png')
     pyplot.show()
+
 
 
 def calculate_results_table(number_of_classes, expected, actual, title):

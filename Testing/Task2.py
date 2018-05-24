@@ -7,10 +7,10 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_2():
-    epochs = 5000
+    epochs = 200
     hidden_nodes = 10
-    learning_rate = 0.1
-    momentum = 0.1
+    learning_rate = 0.9
+    momentum = 0.6
     bias = True
     network = NeuralNetwork(input_nodes=4, hidden_nodes=hidden_nodes, output_nodes=4,
                             learning_rate=learning_rate,
@@ -48,7 +48,7 @@ def task_2():
     for i in range(len(fin)):
         result_tab[numpy.argmax(query_list[i])][numpy.argmax(fin[i])] += 1
 
-    print('Example results table')
+    print('Ex 1 results table')
     print(result_tab)
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
-    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Task 2 error plot' + parameters)
+    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'Ex1 error plot ' + parameters)
