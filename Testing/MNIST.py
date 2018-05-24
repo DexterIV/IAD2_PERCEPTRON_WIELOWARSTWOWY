@@ -6,16 +6,22 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_MNIST():
-    network = NeuralNetwork(784, 140, 10, 0.1, 0.2, bias=True)
+    hidden_nodes = 128
+    epochs = 8
+    learning_rate = 0.05
+    momentum = 0.2
+    bias = True
+    network = NeuralNetwork(input_nodes=784, hidden_nodes=hidden_nodes, output_nodes=10,learning_rate=learning_rate,
+                            momentum=momentum, bias=bias, epochs=epochs, error_sampling_rate=(1/8))
 
     # load the mnist training data CSV file into a list
     training_data_file = open("mnist_train.csv", 'r')
     training_data_list = training_data_file.readlines()
     training_data_file.close()
     # train the neural network
-    epochs = 3
     # go through all records in the training data set
     for e in range(epochs):
+        collect_data_for_plot = True
         for record in training_data_list:
             # split the record by the ',' commas
             all_values = record.split(',')
@@ -25,7 +31,8 @@ def task_MNIST():
             targets = numpy.zeros(10) + 0.01
             # all_values[0] is the target label for this record
             targets[int(all_values[0])] = 0.99
-            network.train_manual_epochs(inputs.tolist(), targets, e)
+            network.train_manual_epochs(inputs.tolist(), targets, e, collect_data_for_plot)
+            collect_data_for_plot = False
 
     # load the mnist test data CSV file into a list
     test_data_file = open("mnist_test.csv", 'r')
@@ -55,6 +62,8 @@ def task_MNIST():
             # network's answer matches correct answer, add 1 to        scorecard
             error += 1
 
-    print("error for seeds = " + str(error / 10000 * 100) + "%")
+    print("MNIST accuracy = " + str(error / 10000 * 100) + "%")
 
-    funs.print_plot(network.sampling_iteration, network.errors_for_plot, 'MNIST error plot')
+    parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
+    # calculate_results_table (3, indices, fin, 'Iris result table\n' + parameters)
+    print_plot(network.sampling_iteration, network.errors_for_plot, 'MNIST error plot \n' + parameters)

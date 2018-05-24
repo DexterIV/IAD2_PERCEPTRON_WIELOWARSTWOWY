@@ -50,7 +50,7 @@ def task_Iris():
         if numpy.argmax(fin[elem]) != indices[elem]:
             error += 1
 
-    print("error for iris= " + str(error / len(fin) * 100) + "%")
+    print("Iris accuracy = " + str(error / len(fin) * 100) + "%")
 
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
     calculate_results_table(3, indices, fin, 'Iris result table\n' + parameters)

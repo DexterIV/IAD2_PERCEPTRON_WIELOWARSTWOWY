@@ -50,7 +50,7 @@ def task_Seeds():
         if numpy.argmax(fin[elem]) != indices[elem]:
             error += 1
 
-    print("error for seeds = " + str(error / len(fin) * 100) + "%")
+    print("Seeds accuracy = " + str(error / len(fin) * 100) + "%")
 
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
     calculate_results_table(3, indices, fin, 'Seeds result table \n' + parameters)

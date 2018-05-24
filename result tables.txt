@@ -1,3 +1,9 @@
+RESULT TABLE is a table of size N x N, where N is the number of classes of given dataset.
+Rows represent expected class, columns represent class that was assigned by neural network,
+e.g. in cell (1, 3) is number '3' - that means that neural network assigned three different
+records of first class to the third class.
+Perfect result table should have values different than 0 only when column index and row index are the same
+
 Seeds results table
 [[66.  0.  3.]
  [ 0. 70.  0.]
