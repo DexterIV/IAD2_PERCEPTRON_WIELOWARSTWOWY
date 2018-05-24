@@ -8,8 +8,8 @@ from mlp.NeuralNetwork import NeuralNetwork
 def task_Iris():
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
     hidden_nodes = 10
-    epochs = 500
-    learning_rate = 0.01
+    epochs = 1500
+    learning_rate = 0.99999
     momentum = 0.1
     bias = True
     network = NeuralNetwork(input_nodes=4, hidden_nodes=hidden_nodes,
@@ -50,7 +50,7 @@ def task_Iris():
         if numpy.argmax(fin[elem]) != indices[elem]:
             error += 1
 
-    print("Iris accuracy = " + str(error / len(fin) * 100) + "%")
+    print("Iris error rate = " + str(error / len(fin) * 100) + "%")
 
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
     calculate_results_table(3, indices, fin, 'Iris result table\n' + parameters)

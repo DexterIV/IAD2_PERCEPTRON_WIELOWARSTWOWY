@@ -9,8 +9,8 @@ from mlp.NeuralNetwork import NeuralNetwork
 def task_2():
     epochs = 200
     hidden_nodes = 10
-    learning_rate = 0.9
-    momentum = 0.6
+    learning_rate = 0.2
+    momentum = 0.9
     bias = True
     network = NeuralNetwork(input_nodes=4, hidden_nodes=hidden_nodes, output_nodes=4,
                             learning_rate=learning_rate,

@@ -6,10 +6,10 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 
 def task_Seeds():
-    hidden_nodes = 16
-    epochs = 5000
-    learning_rate = 0.05
-    momentum = 0.2
+    hidden_nodes = 2
+    epochs = 1500
+    learning_rate = 0.01
+    momentum = 0.1
     bias = True
     network = NeuralNetwork(input_nodes=7, hidden_nodes=hidden_nodes, output_nodes=3,
                             learning_rate=learning_rate, momentum=momentum, bias=bias, epochs=epochs)
@@ -50,7 +50,7 @@ def task_Seeds():
         if numpy.argmax(fin[elem]) != indices[elem]:
             error += 1
 
-    print("Seeds accuracy = " + str(error / len(fin) * 100) + "%")
+    print("Seeds error rate = " + str(error / len(fin) * 100) + "%")
 
     parameters = parameters_as_string(hidden_nodes, learning_rate, momentum, epochs, bias)
     calculate_results_table(3, indices, fin, 'Seeds result table \n' + parameters)

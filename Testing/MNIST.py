@@ -7,8 +7,8 @@ from mlp.NeuralNetwork import NeuralNetwork
 
 def task_MNIST():
     numpy.set_printoptions(suppress=True)  # avoid e-05 notation
-    hidden_nodes = 128
-    epochs = 5
+    hidden_nodes = 10
+    epochs = 3
     learning_rate = 0.05
     momentum = 0.2
     bias = True
