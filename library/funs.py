@@ -66,4 +66,21 @@ def print_plot(x_axis, y_axis, title):
     pyplot.ylabel("error")
     pyplot.suptitle(title)
     pyplot.show()
-    pass
+
+
+def get_index_of_max_element(source):
+    index_max = 0
+    for i in range(1, len(source)):
+        if source[i] > source[index_max]:
+            index_max = i
+    return index_max
+
+
+def calculate_results_table(number_of_classes, expected, actual):
+    result_tab = np.zeros(shape=(number_of_classes, number_of_classes))
+
+    for i in range(len(actual)):
+        result_tab[get_index_of_max_element(expected[i])][get_index_of_max_element(actual[i])] += 1
+
+    print('printing results table')
+    print(result_tab)

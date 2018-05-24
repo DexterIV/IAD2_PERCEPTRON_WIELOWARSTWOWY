@@ -2,6 +2,7 @@ import numpy
 from library import funs
 import copy
 
+
 class NeuralNetwork:
     def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate, momentum, bias,
                  epochs, error_sampling_rate=0.005):
